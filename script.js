@@ -3,7 +3,7 @@ const map = L.map('map').setView([35.681236, 139.767125], 13);
 L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
     attribution: '国土地理院'
 }).addTo(map);
-
+/*
 // GPXフォルダからデータをロード
 const runners = ['runner1.gpx', 'runner2.gpx', 'runner3.gpx'];
 runners.forEach((file, index) => {
@@ -31,3 +31,4 @@ fetch('https://script.google.com/macros/s/YOUR_DEPLOYED_GAS_URL/exec')
             marker.bindPopup(cp.name).addTo(map);
         });
     });
+    */
