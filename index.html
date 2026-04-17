@@ -1,88 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-    <link rel="stylesheet" href="https://unpkg.com" />
-    <script src="https://unpkg.com"></script>
-    <!-- GPX解析用 -->
-    <script src="https://cloudflare.com"></script>
-    <!-- トラック再生用プラグイン -->
-    <script src="https://unpkg.com"></script>
-    <style>
-        #map { height: 600px; width: 100%; }
-        .controls { padding: 10px; background: #eee; }
-    </style>
+  <meta charset="utf-8" />
+  <title>orien-live｜クルー位置マップ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 以下LeafletのJavaScriptとCSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cloudflare.com"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+  </style>
 </head>
 <body>
-    <div class="controls">
-        速度: <input type="range" id="speedRange" min="1" max="100" value="20"> <span id="speedVal">20</span>倍
-        <button onclick="startPlay()">再生</button>
-    </div>
-    <div id="map"></div>
 
-    <script>
-        let player;
+<div id="map"></div>
 
-        function initMap(data) {
-            const map = L.map('map').setView([data.cps[0].lat, data.cps[0].lng], 15);
-            
-            // 国土地理院地図（標準地図）
-            L.tileLayer('https://gsi.go.jp{z}/{x}/{y}.png', {
-                attribution: "&copy; <a href='https://gsi.go.jp'>国土地理院</a>"
-            }).addTo(map);
+<script>
+  /********************
+   * 設定
+   ********************/
+  const CENTER_LAT = 34.4;
+  const CENTER_LNG = 132.4;
+  const ZOOM_LEVEL = 12;
 
-            // CPと記号の描画
-            data.cps.forEach(cp => {
-                const pos = [cp.lat, cp.lng];
-                if (cp.order === 's') {
-                    // スタート: 正三角形（△）
-                    const triangle = L.polygon([
-                        [cp.lat + 0.0005, cp.lng],
-                        [cp.lat - 0.0003, cp.lng - 0.0004],
-                        [cp.lat - 0.0003, cp.lng + 0.0004]
-                    ], {color: 'red', fill: false, weight: 3}).addTo(map);
-                } else if (cp.order === 'g') {
-                    // ゴール: 二重円（◎）
-                    L.circle(pos, {radius: 25, color: 'red', fill: false, weight: 3}).addTo(map);
-                    L.circle(pos, {radius: 15, color: 'red', fill: false, weight: 3}).addTo(map);
-                } else {
-                    // 通常CP: ⭕️
-                    L.circle(pos, {radius: 20, color: 'red', fill: false, weight: 3}).addTo(map);
-                }
-            });
+  const DATA_URL = "crew_locations.json";
+  const REFRESH_INTERVAL = 60000; // 1分（ミリ秒）
 
-            // 全員のログを「同時スタート」に補正
-            const allTracks = data.logs.map(log => {
-                const gpx = new gpxParser();
-                gpx.parse(log.xml);
-                const points = gpx.tracks[0].points;
-                const startTime = new Date(points[0].time).getTime();
+   /********************
+   * 地図初期化
+   ********************/
+  const map = L.map("map").setView(
+    [CENTER_LAT, CENTER_LNG],
+    ZOOM_LEVEL
+  );
 
-                return points.map(p => ({
-                    lat: p.lat,
-                    lng: p.lon,
-                    // 経過時間(ms)に変換することで、全員0秒スタートにする
-                    time: new Date(p.time).getTime() - startTime
-                }));
-            });
+  // 国土地理院地図
+  L.tileLayer(
+    "https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png",
+    {
+      attribution: "地図情報 © 国土地理院"
+    }
+  ).addTo(map);
 
-            // プレイヤー作成
-            player = new L.TrackPlayer(allTracks, {
-                speed: 20,
-                marker: (i) => L.divIcon({html: `<div style="background:blue; color:white; padding:2px;">${data.logs[i].name}</div>`})
-            }).addTo(map);
-        }
 
-        // 速度調整
-        document.getElementById('speedRange').addEventListener('input', (e) => {
-            const val = e.target.value;
-            document.getElementById('speedVal').innerText = val;
-            if(player) player.setSpeed(Number(val));
+/**/
+  // マーカー専用レイヤー
+  const markerLayer = L.layerGroup().addTo(map);
+
+  /********************
+   * マーカー更新処理
+   ********************/
+  /*
+  function loadMarkers() {
+    fetch(DATA_URL + "?t=" + Date.now()) // キャッシュ回避
+      .then(response => response.json())
+      .then(data => {
+        // 既存マーカーを全削除
+        markerLayer.clearLayers();
+
+        data.forEach(c => {
+          L.marker([c.lat, c.lng])
+            .addTo(markerLayer)
+            .bindPopup(
+              `<strong>${c.name}</strong><br>
+               最終更新：${c.time}`
+            );
         });
+      })
+      .catch(error => {
+        console.error("位置データ取得エラー", error);
+      });
+  }
+  */
+/*
+    async function loadMarkers() {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbyZm-IIzgbk8KaX12tBHtgcX4w7cejKdR1SQZgukdC6Zl5M5e3N-DbVX5epVlzvgw/exec");
+      const locations = await response.json();
+      
+      locations.forEach(loc => {
+        L.marker([loc.lat, loc.lng])
+          .addTo(map)
+          .bindPopup(`${loc.name}<br>${loc.time}`);
+      });
+    }  
+    */
+  async function loadMarkers() {
+  const response = await fetch("https://script.google.com/macros/s/AKfycbyZm-IIzgbk8KaX12tBHtgcX4w7cejKdR1SQZgukdC6Zl5M5e3N-DbVX5epVlzvgw/exec");
+  const locations = await response.json();
+  
+  locations.forEach(loc => {
+    // L.marker ではなく L.circleMarker を使用
+    L.circleMarker([loc.lat, loc.lng], {
+      radius: 12,           // ⭕️の大きさ
+      color: '#ff4500',     // 枠線の色（オレンジレッドなど）
+      weight: 3,            // 枠線の太さ
+      opacity: 0.8,         // 枠線の透明度
+      fillColor: '#ff4500', // 中の色
+      fillOpacity: 0//0.2      // 中の透明度（ここを下げると「透明な⭕️」に見えます）
+    })
+    .addTo(map)
+    .bindPopup(`${loc.name}<br>${loc.time}`);
+  });
+}  
+  /********************
+   * 初回読み込み & 自動更新
+   ********************/
+  loadMarkers();                         // ページ表示時
+  setInterval(loadMarkers, REFRESH_INTERVAL); // 定期更新
 
-        function startPlay() { player && player.start(); }
+</script>
 
-        // GASからデータを取得
-        google.script.run.withSuccessHandler(initMap).getData();
-    </script>
 </body>
 </html>
