@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com" />
+    <script src="https://unpkg.com"></script>
+    <!-- GPX解析用 -->
+    <script src="https://cloudflare.com"></script>
+    <!-- トラック再生用プラグイン -->
+    <script src="https://unpkg.com"></script>
+    <style>
+        #map { height: 600px; width: 100%; }
+        .controls { padding: 10px; background: #eee; }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        速度: <input type="range" id="speedRange" min="1" max="100" value="20"> <span id="speedVal">20</span>倍
+        <button onclick="startPlay()">再生</button>
+    </div>
+    <div id="map"></div>
 
+    <script>
+        let player;
+
+        function initMap(data) {
+            const map = L.map('map').setView([data.cps[0].lat, data.cps[0].lng], 15);
+            
+            // 国土地理院地図（標準地図）
+            L.tileLayer('https://gsi.go.jp{z}/{x}/{y}.png', {
+                attribution: "&copy; <a href='https://gsi.go.jp'>国土地理院</a>"
+            }).addTo(map);
+
+            // CPと記号の描画
+            data.cps.forEach(cp => {
+                const pos = [cp.lat, cp.lng];
+                if (cp.order === 's') {
+                    // スタート: 正三角形（△）
+                    const triangle = L.polygon([
+                        [cp.lat + 0.0005, cp.lng],
+                        [cp.lat - 0.0003, cp.lng - 0.0004],
+                        [cp.lat - 0.0003, cp.lng + 0.0004]
+                    ], {color: 'red', fill: false, weight: 3}).addTo(map);
+                } else if (cp.order === 'g') {
+                    // ゴール: 二重円（◎）
+                    L.circle(pos, {radius: 25, color: 'red', fill: false, weight: 3}).addTo(map);
+                    L.circle(pos, {radius: 15, color: 'red', fill: false, weight: 3}).addTo(map);
+                } else {
+                    // 通常CP: ⭕️
+                    L.circle(pos, {radius: 20, color: 'red', fill: false, weight: 3}).addTo(map);
+                }
+            });
+
+            // 全員のログを「同時スタート」に補正
+            const allTracks = data.logs.map(log => {
+                const gpx = new gpxParser();
+                gpx.parse(log.xml);
+                const points = gpx.tracks[0].points;
+                const startTime = new Date(points[0].time).getTime();
+
+                return points.map(p => ({
+                    lat: p.lat,
+                    lng: p.lon,
+                    // 経過時間(ms)に変換することで、全員0秒スタートにする
+                    time: new Date(p.time).getTime() - startTime
+                }));
+            });
+
+            // プレイヤー作成
+            player = new L.TrackPlayer(allTracks, {
+                speed: 20,
+                marker: (i) => L.divIcon({html: `<div style="background:blue; color:white; padding:2px;">${data.logs[i].name}</div>`})
+            }).addTo(map);
+        }
+
+        // 速度調整
+        document.getElementById('speedRange').addEventListener('input', (e) => {
+            const val = e.target.value;
+            document.getElementById('speedVal').innerText = val;
+            if(player) player.setSpeed(Number(val));
+        });
+
+        function startPlay() { player && player.start(); }
+
+        // GASからデータを取得
+        google.script.run.withSuccessHandler(initMap).getData();
+    </script>
+</body>
+</html>
