@@ -4,6 +4,27 @@ L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
     attribution: '国土地理院'
 }).addTo(map);
 // GPXフォルダからデータをロード
+const runners = ['mik.gpx'];
+runners.forEach((file, index) => {
+    new L.GPX(`./gpxdata/${file}`, {
+        async: true,
+        marker_options: {
+            startIconUrl: './images/start.png',
+            endIconUrl: './images/goal.png',
+        },
+        polyline_options: {
+            color: 'blue',
+            opacity: 0.7,
+            weight: 3,
+            lineCap: 'round'
+        }
+    }).on('loaded', function(e) {
+        const gpx = e.target;
+        // ズームレベルを調整（大きめに設定）
+        map.fitBounds(gpx.getBounds(), { padding: [50, 50] });
+    }).addTo(map);
+/*
+// GPXフォルダからデータをロード
 const runners = ['mik.gpx']; //, 'runner2.gpx', 'runner3.gpx'];
 runners.forEach((file, index) => {
     new L.GPX(`./gpxdata/${file}`, {
@@ -18,7 +39,6 @@ runners.forEach((file, index) => {
     }).addTo(map);
 });
 
-/*
 
 // チェックポイントの表示
 fetch('https://script.google.com/macros/s/YOUR_DEPLOYED_GAS_URL/exec')
