@@ -18,6 +18,10 @@ runners.forEach((file, index) => {
     }).on('loaded', function(e) {
         const gpx = e.target;
         map.fitBounds(gpx.getBounds());
+
+    // 1. 軌跡の全座標 (緯度経度配列) を取得
+    var points = gpx.get_points(); 
+    console.log('Points:', points); // [{lat: ..., lon: ..., ele: ...}, ...]
         
         // 全ての座標ポイントを配列として取得
 //        const trackPoints = gpx.getLatLngs();
