@@ -61,12 +61,14 @@ runners.forEach((file, index) => {
       speed:         1.0      // 実時間
     };
 
+    // Playbackインスタンス生成
+    new L.Playback(map, demoTracks, null, playbackOptions);
 
 
     }).addTo(map);
 });
 
-
+<!--
    // サンプルトラック（GeoJSON：MultiPoint＋time配列）
     const demoTracks = [{
       type: 'Feature',
@@ -100,7 +102,7 @@ runners.forEach((file, index) => {
 
     // Playbackインスタンス生成
     new L.Playback(map, demoTracks, null, playbackOptions);
-
+-->
 // ===== 将来用：Google Apps Scriptチェックポイント =====
 /*
 function loadCheckpoints() {
