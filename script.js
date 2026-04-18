@@ -18,8 +18,21 @@ runners.forEach((file, index) => {
     }).on('loaded', function(e) {
         const gpx = e.target;
         map.fitBounds(gpx.getBounds());
+        
+        // 全ての座標ポイントを配列として取得
+        const trackPoints = gpx.getLatLngs();
+        // Leaflet.GPXは [ [ [lat, lng], [lat, lng] ] ] のような多重配列を返すことが多いため平坦化(flat)すると扱いやすいです
+        const flatPoints = trackPoints.flat(Infinity);
+        
+        // 例：最初の1点目の緯度を取得
+        if (flatPoints.length > 0) {
+            console.log("最初のポイントの緯度:", flatPoints[0].lat);
+            console.log("最初のポイントの経度:", flatPoints[0].lng);
+        }
+
     }).addTo(map);
 });
+
 
    // サンプルトラック（GeoJSON：MultiPoint＋time配列）
     const demoTracks = [{
