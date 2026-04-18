@@ -32,8 +32,9 @@ runners.forEach((file, index) => {
 //      }
 //    });
 const time = e.element.getElementsByTagName('time')[0].textContent;
-const objData=JSON.parse(e);
-console.log("test:",objData.time);
+const ojbJdata = e.element.getElementsByTagName('time');
+        //NG const objData=JSON.parse(e);
+//NG console.log("test:",objData.time);
         //　  const lat = gpx.point.getLatLng().lat; // 緯度
 //    const points = gpx_parse_gpx_data(t,e); 
 //    console.log('Points:', points.name); // [{lat: ..., lon: ..., ele: ...}, ...]
