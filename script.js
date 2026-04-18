@@ -5,7 +5,7 @@ const map = L.map('map').setView([35.681236, 139.767125], 13);
 L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
     attribution: '国土地理院'
 }).addTo(map);
-
+/*
 // パフォーマンス監視用
 const performanceMetrics = {
     startTime: Date.now(),
@@ -135,7 +135,7 @@ map.on('moveend', () => {
 map.on('zoomend', () => {
     canvasLayer.redraw();
 });
-
+*/
 // ===== 将来用：Google Apps Scriptチェックポイント =====
 /*
 function loadCheckpoints() {
