@@ -30,6 +30,39 @@ runners.forEach((file, index) => {
 //            console.log("最初のポイントの経度:", flatPoints[0].lng);
 //        }
 
+   // サンプルトラック（GeoJSON：MultiPoint＋time配列）
+    const demoTracks = [{
+      type: 'Feature',
+      geometry: {
+        type: 'MultiPoint',
+        coordinates: [
+          [132.480359, 34.402538],
+          [132.486721, 34.40312],
+          [132.488101, 34.410693],
+          [132.488736, 34.415688]
+        ]
+      },
+      properties: {
+        time: [
+          Date.now() - 30000,
+          Date.now() - 20000,
+          Date.now() - 10000,
+          Date.now()
+        ]
+      }
+    }];
+
+    // 再生オプション
+    const playbackOptions = {
+      playControl:   true,    // 再生ボタン
+      dateControl:   true,    // 日時表示
+      sliderControl: true,    // スライダー
+      orientIcons:   true,    // 進行方向アイコン
+      speed:         1.0      // 実時間
+    };
+
+
+
     }).addTo(map);
 });
 
