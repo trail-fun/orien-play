@@ -20,7 +20,7 @@ runners.forEach((file, index) => {
         map.fitBounds(gpx.getBounds());
 
     // 1. 軌跡の全座標 (緯度経度配列) を取得
-//    const points = JSON.parse(gpx）; 
+    const points = gpx.get_name(); 
 //    console.log('Points:', points.name); // [{lat: ..., lon: ..., ele: ...}, ...]
         
         // 全ての座標ポイントを配列として取得
