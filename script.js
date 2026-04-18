@@ -29,7 +29,7 @@ runners.forEach((file, index) => {
 //      const coords = layer.getLatLngs(); 
       // coords は [{lat: ..., lng: ...}, ...] という配列になります
 //      console.log("全座標データ:", coords);
-      }
+//      }
     });
 const time = e.element.getElementsByTagName('time')[0].textContent;
 //　  const lat = gpx.point.getLatLng().lat; // 緯度
