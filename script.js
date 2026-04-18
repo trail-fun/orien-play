@@ -20,19 +20,21 @@ runners.forEach((file, index) => {
         map.fitBounds(gpx.getBounds());
 
     // 1. 軌跡の全座標 (緯度経度配列) を取得
-  const layers = e.target.getLayers();
+//  const layers = e.target.getLayers();
 
-        layers.forEach(layer => {
-  console.log("緯度経度:",layer.getLatLngs());//layer.getLatLngs();
+//        layers.forEach(layer => {
+//  console.log("緯度経度:",layer.getLatLngs());//layer.getLatLngs();
         // layerが線（Polyline）の場合、その全座標を取り出す
 //    if (layer instanceof L.Polyline) {
 //      const coords = layer.getLatLngs(); 
       // coords は [{lat: ..., lng: ...}, ...] という配列になります
 //      console.log("全座標データ:", coords);
 //      }
-    });
+//    });
 const time = e.element.getElementsByTagName('time')[0].textContent;
-//　  const lat = gpx.point.getLatLng().lat; // 緯度
+const objData=JSON.parse(e);
+console.log("test:",objData.time);
+        //　  const lat = gpx.point.getLatLng().lat; // 緯度
 //    const points = gpx_parse_gpx_data(t,e); 
 //    console.log('Points:', points.name); // [{lat: ..., lon: ..., ele: ...}, ...]
         
