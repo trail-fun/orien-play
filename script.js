@@ -28,7 +28,7 @@ runners.forEach((file, index) => {
 //        if (flatPoints.length > 0) {
 //            console.log("最初のポイントの緯度:", flatPoints[0].lat);
 //            console.log("最初のポイントの経度:", flatPoints[0].lng);
-        }
+//        }
 
     }).addTo(map);
 });
