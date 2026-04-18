@@ -5,6 +5,22 @@ const map = L.map('map').setView([35.681236, 139.767125], 13);
 L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
     attribution: '国土地理院'
 }).addTo(map);
+
+// GPXフォルダからデータをロード
+const runners = ['mik2.gpx'];//, 'runner2.gpx', 'runner3.gpx'];
+runners.forEach((file, index) => {
+    new L.GPX(`./gpxdata/${file}`, {
+        async: true,
+        marker_options: {
+            startIconUrl: './images/start.png',
+            endIconUrl: './images/goal.png',
+        }
+    }).on('loaded', function(e) {
+        const gpx = e.target;
+        map.fitBounds(gpx.getBounds());
+    }).addTo(map);
+});
+
 /*
 // パフォーマンス監視用
 const performanceMetrics = {
