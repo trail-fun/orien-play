@@ -1,0 +1,45 @@
+.player-ui {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 5px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #007bff;
+}
+
+.runner-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.runner-list li {
+    margin: 5px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
