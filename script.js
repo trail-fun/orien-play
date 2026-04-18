@@ -23,7 +23,7 @@ runners.forEach((file, index) => {
   const layers = e.target.getLayers();
 
         layers.forEach(layer => {
-  console.log("緯度経度:",layer.getLatLns());
+  console.log("緯度経度:",layer.getLatLngs());//layer.getLatLngs();
         // layerが線（Polyline）の場合、その全座標を取り出す
 //    if (layer instanceof L.Polyline) {
 //      const coords = layer.getLatLngs(); 
