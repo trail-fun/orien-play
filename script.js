@@ -59,7 +59,18 @@ const times = locations.map(loc => {
 
 console.log("coords:",coords)
 console.log("times:",times)
-        
+// サンプルトラックを locations データで作成
+const demoTracks = [{
+    type: 'Feature',
+    geometry: {
+        type: 'MultiPoint',
+        coordinates: coords
+    },
+    properties: {
+        time: times
+    }
+}];
+/*
    // サンプルトラック（GeoJSON：MultiPoint＋time配列）
     const demoTracks = [{
       type: 'Feature',
@@ -98,7 +109,7 @@ console.log("times:",times)
         ]
       }
     }];
-
+*/
     // 再生オプション
     const playbackOptions = {
       playControl:   true,    // 再生ボタン
