@@ -68,28 +68,23 @@ console.log(locations);
             [locations[450].lon,locations[450].lat]
 
             //          [132.480359, 34.402538],
-          [132.486721, 34.40312],
-          [132.488101, 34.410693],
-          [132.488736, 34.415688]
+//          [132.486721, 34.40312],
+//          [132.488101, 34.410693],
+//          [132.488736, 34.415688]
         ]
       },
       properties: {
         time: [
-            date.parse(locations[0].time),
-            date.parse(locations[50].time),
-            date.parse(locations[100].time),
-            date.parse(locations[150].time),
-            date.parse(locations[200].time),
-            date.parse(locations[250].time),
-            date.parse(locations[300].time),
-            date.parse(locations[350].time),
-            date.parse(locations[400].time),
-            date.parse(locations[450].time)
-         
-            //         Date.now() - 30000,
- //         Date.now() - 20000,
- //         Date.now() - 10000,
- //         Date.now()
+          Date.now() - 90000,
+          Date.now() - 80000,
+          Date.now() - 70000,
+          Date.now() - 60000,
+          Date.now() - 50000,
+          Date.now() - 40000,
+          Date.now() - 30000,
+          Date.now() - 20000,
+          Date.now() - 10000,
+          Date.now()
         ]
       }
     }];
