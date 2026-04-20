@@ -49,22 +49,6 @@ console.log(typeof trackPoints === "object"); // true
     });
     }
 console.log(locations);
-        //NG const objData=JSON.parse(e);
-//NG console.log("test:",objData.time);
-        //　  const lat = gpx.point.getLatLng().lat; // 緯度
-//    const points = gpx_parse_gpx_data(t,e); 
-//    console.log('Points:', points.name); // [{lat: ..., lon: ..., ele: ...}, ...]
-        
-        // 全ての座標ポイントを配列として取得
-//        const trackPoints = gpx.getLatLngs();
-        // Leaflet.GPXは [ [ [lat, lng], [lat, lng] ] ] のような多重配列を返すことが多いため平坦化(flat)すると扱いやすいです
-//        const flatPoints = trackPoints.flat(Infinity);
-        
-        // 例：最初の1点目の緯度を取得
-//        if (flatPoints.length > 0) {
-//            console.log("最初のポイントの緯度:", flatPoints[0].lat);
-//            console.log("最初のポイントの経度:", flatPoints[0].lng);
-//        }
 
    // サンプルトラック（GeoJSON：MultiPoint＋time配列）
     const demoTracks = [{
@@ -72,7 +56,9 @@ console.log(locations);
       geometry: {
         type: 'MultiPoint',
         coordinates: [
-          [132.480359, 34.402538],
+            [locations[0].lon,locations[0].lat],
+
+            //          [132.480359, 34.402538],
           [132.486721, 34.40312],
           [132.488101, 34.410693],
           [132.488736, 34.415688]
