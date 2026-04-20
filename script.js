@@ -48,8 +48,17 @@ console.log(typeof trackPoints === "object"); // true
         time: pt.getElementsByTagName("time")[0] ? pt.getElementsByTagName("time")[0].textContent : null
     });
     }
-console.log(locations);
+//console.log(locations);
 
+// locations配列から coordinates (経度, 緯度) と time (ミリ秒) を抽出
+const coords = locations.map(loc => [loc.lon, loc.lat]);
+const times = locations.map(loc => {
+    // GPXの時刻文字列をミリ秒単位の数値（タイムスタンプ）に変換
+    return loc.time ? new Date(loc.time).getTime() : null;
+}).filter(t => t !== null); // 時刻データがない地点を除外する場合
+
+
+        
    // サンプルトラック（GeoJSON：MultiPoint＋time配列）
     const demoTracks = [{
       type: 'Feature',
