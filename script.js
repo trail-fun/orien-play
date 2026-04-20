@@ -56,15 +56,18 @@ console.log(locations);
       geometry: {
         type: 'MultiPoint',
         coordinates: [
-            [locations[0].lon,locations[0].lat],
-            [locations[50].lon,locations[50].lat],
-            [locations[100].lon,locations[100].lat],
-            [locations[150].lon,locations[150].lat],
-            [locations[200].lon,locations[200].lat],
-            [locations[250].lon,locations[250].lat],
-            [locations[300].lon,locations[300].lat],
-            [locations[350].lon,locations[350].lat],
-            [locations[400].lon,locations[400].lat],
+            for(let i=0,i<9,i++){
+              [locations[i].lon,locations[i].lat],
+            }
+//            [locations[0].lon,locations[0].lat],
+//            [locations[50].lon,locations[50].lat],
+//            [locations[100].lon,locations[100].lat],
+//            [locations[150].lon,locations[150].lat],
+//            [locations[200].lon,locations[200].lat],
+//            [locations[250].lon,locations[250].lat],
+//            [locations[300].lon,locations[300].lat],
+//            [locations[350].lon,locations[350].lat],
+//            [locations[400].lon,locations[400].lat],
             [locations[450].lon,locations[450].lat]
 
             //          [132.480359, 34.402538],
