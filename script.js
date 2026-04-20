@@ -57,7 +57,8 @@ const times = locations.map(loc => {
     return loc.time ? new Date(loc.time).getTime() : null;
 }).filter(t => t !== null); // 時刻データがない地点を除外する場合
 
-
+console.log("coords:",coords)
+console.log("times:",times)
         
    // サンプルトラック（GeoJSON：MultiPoint＋time配列）
     const demoTracks = [{
