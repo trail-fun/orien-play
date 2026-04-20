@@ -32,11 +32,23 @@ runners.forEach((file, index) => {
 //      }
 //    });
 const time = e.element.getElementsByTagName('time')[0].textContent;
-const objdata = e.element.getElementsByTagName('trkpt');
-console.log("trkpt:",objdata[0]);
-console.log("length:",objdata.length);
-console.log(typeof objdata === "object"); // true
+const trackPoints = e.element.getElementsByTagName('trkpt');
+console.log("trkpt:",trackPoints[0]);
+console.log("length:",trackPoints.length);
+console.log(typeof trackPoints === "object"); // true
 
+    const locations = [];
+
+    for (let i = 0; i < trackPoints.length; i++) {
+    const pt = trackPoints[i];
+    locations.push({
+        lat: parseFloat(pt.getAttribute("lat")),
+        lon: parseFloat(pt.getAttribute("lon")),
+//        ele: pt.getElementsByTagName("ele")[0] ? parseFloat(pt.getElementsByTagName("ele")[0].textContent) : null,
+        time: pt.getElementsByTagName("time")[0] ? pt.getElementsByTagName("time")[0].textContent : null
+    });
+    }
+console.log(locations);
         //NG const objData=JSON.parse(e);
 //NG console.log("test:",objData.time);
         //　  const lat = gpx.point.getLatLng().lat; // 緯度
