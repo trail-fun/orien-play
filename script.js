@@ -57,6 +57,15 @@ console.log(locations);
         type: 'MultiPoint',
         coordinates: [
             [locations[0].lon,locations[0].lat],
+            [locations[50].lon,locations[50].lat],
+            [locations[100].lon,locations[100].lat],
+            [locations[150].lon,locations[150].lat],
+            [locations[200].lon,locations[200].lat],
+            [locations[250].lon,locations[250].lat],
+            [locations[300].lon,locations[300].lat],
+            [locations[350].lon,locations[350].lat],
+            [locations[400].lon,locations[400].lat],
+            [locations[450].lon,locations[450].lat]
 
             //          [132.480359, 34.402538],
           [132.486721, 34.40312],
@@ -66,10 +75,21 @@ console.log(locations);
       },
       properties: {
         time: [
-          Date.now() - 30000,
-          Date.now() - 20000,
-          Date.now() - 10000,
-          Date.now()
+            date.parse(locations[0].time),
+            date.parse(locations[50].time),
+            date.parse(locations[100].time),
+            date.parse(locations[150].time),
+            date.parse(locations[200].time),
+            date.parse(locations[250].time),
+            date.parse(locations[300].time),
+            date.parse(locations[350].time),
+            date.parse(locations[400].time),
+            date.parse(locations[450].time)
+         
+            //         Date.now() - 30000,
+ //         Date.now() - 20000,
+ //         Date.now() - 10000,
+ //         Date.now()
         ]
       }
     }];
