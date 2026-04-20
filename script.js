@@ -34,7 +34,9 @@ runners.forEach((file, index) => {
 const time = e.element.getElementsByTagName('time')[0].textContent;
 const objdata = e.element.getElementsByTagName('trkpt');
 console.log("trkpt:",objdata[0]);
+console.log("length:",objdata.length);
 console.log(typeof objdata === "object"); // true
+
         //NG const objData=JSON.parse(e);
 //NG console.log("test:",objData.time);
         //　  const lat = gpx.point.getLatLng().lat; // 緯度
