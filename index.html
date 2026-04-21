@@ -54,11 +54,11 @@ const loadGpxAsTrack = (file) => {
                 });
             }
             resolve(points); // このGPXの全ポイントを返す
+console.log("points:",points);
         })
         .addTo(map);
     });
 };
-console.log("points:",points);
 //--------
     
 
