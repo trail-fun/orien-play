@@ -32,6 +32,37 @@ L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
     attribution: '国土地理院'
 }).addTo(map);
 
+//--------
+const runners = ['mik.gpx'];//, 'runner2.gpx', 'runner3.gpx'];
+
+// 各GPXのパース処理をPromise化する関数
+const loadGpxAsTrack = (file) => {
+    return new Promise((resolve) => {
+        new L.GPX(`./gpxdata/${file}`, { async: true })
+        .on('loaded', function(e) {
+            const trackPoints = e.element.getElementsByTagName('trkpt');
+            const points = [];
+
+            for (let i = 0; i < trackPoints.length; i++) {
+                const pt = trackPoints[i];
+                const timeStr = pt.getElementsByTagName("time")[0]?.textContent;
+                
+                points.push({
+                    lat: parseFloat(pt.getAttribute("lat")),
+                    lng: parseFloat(pt.getAttribute("lon")), // trackplayback用にlngとする
+                    time: timeStr ? Math.floor(new Date(timeStr).getTime() / 1000) : 0
+                });
+            }
+            resolve(points); // このGPXの全ポイントを返す
+        })
+        .addTo(map);
+    });
+};
+//--------
+    
+
+
+    
     // get data from server
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'examples/data/test.json', true);
