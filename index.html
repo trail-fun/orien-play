@@ -71,7 +71,7 @@ const loadGpxAsTrack = (file) => {
 };
 
 // 2. 実行処理：GPXを読み込んでからコントロールを表示
-const targetGpx = 'mik_shiraishi.gpx'; // 読み込みたいファイル名
+const targetGpx = './gpxdata/mik_shiraishi.gpx'; // 読み込みたいファイル名
 
 loadGpxAsTrack(targetGpx)
     .then((trackData) => {
